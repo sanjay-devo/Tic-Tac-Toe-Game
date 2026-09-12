@@ -21,4 +21,11 @@
     <string name="exit_game_question">Do you want to leave?</string>
     <string name="no">NO</string>
     <string name="yes">YES</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="back">Back</string>
+    <string name="whatsapp_support">WhatsApp Support</string>
+    <string name="support_title">ICC</string>
+    <string name="video_call">Video Call</string>
+    <string name="phone_call">Phone Call</string>
+    <string name="more_options">More options</string>
 </resources>

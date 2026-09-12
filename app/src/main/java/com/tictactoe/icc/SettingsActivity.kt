@@ -83,6 +83,16 @@ class SettingsActivity : AppCompatActivity() {
         binding.rowPrivacy.setOnClickListener {
             startActivity(Intent(this, PrivacyActivity::class.java))
         }
+
+        // WhatsApp
+        binding.btnWhatsApp.setOnClickListener {
+            startActivity(Intent(this, ComingSoonActivity::class.java))
+        }
+        
+        binding.btnWhatsApp.setOnLongClickListener {
+            startActivity(Intent(this, SupportChatActivity::class.java))
+            true
+        }
     }
 
     private fun showDifficultyDropdown() {

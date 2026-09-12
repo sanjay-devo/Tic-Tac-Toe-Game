@@ -14,4 +14,11 @@
     <color name="x_gradient_end">#00FFFF</color> <!-- Cyan/Turquoise -->
     <color name="o_gradient_start">#FB7035</color>
     <color name="o_gradient_end">#FFFF00</color> <!-- Yellow -->
+
+    <!-- Chat Colors -->
+    <color name="chat_sent_bg">#E7FFDB</color>
+    <color name="chat_received_bg">#FFFFFF</color>
+    <color name="chat_read_tick">#3B7DF8</color>
+    <color name="chat_unread_tick">#777D88</color>
+    <color name="chat_timestamp">#777D88</color>
 </resources>

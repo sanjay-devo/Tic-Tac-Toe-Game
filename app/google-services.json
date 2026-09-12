@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "622663746950",
+    "firebase_url": "https://rs-chat-sanjay-default-rtdb.firebaseio.com",
+    "project_id": "rs-chat-sanjay",
+    "storage_bucket": "rs-chat-sanjay.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:622663746950:android:737bda816948e569bc9807",
+        "android_client_info": {
+          "package_name": "com.tictactoe.icc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtcUEIUhNoXRVWWMx5W02qrgpNnEPMRi8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
