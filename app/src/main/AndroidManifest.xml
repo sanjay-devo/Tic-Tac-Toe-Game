@@ -43,6 +43,10 @@
             android:name=".GameAiActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".GameFriendActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

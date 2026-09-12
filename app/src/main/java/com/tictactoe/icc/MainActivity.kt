@@ -37,12 +37,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showExitConfirmation() {
-        MaterialAlertDialogBuilder(this)
-            .setTitle("Exit App?")
-            .setMessage("Are you sure you want to close the app?")
-            .setNegativeButton("NO") { dialog, _ -> dialog.dismiss() }
-            .setPositiveButton("YES") { _, _ -> finish() }
-            .show()
+        val dialogView = layoutInflater.inflate(R.layout.dialog_exit, null)
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setView(dialogView)
+            .create()
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        dialogView.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnNo).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogView.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnYes).setOnClickListener {
+            dialog.dismiss()
+            finish()
+        }
+
+        dialog.show()
     }
 
     private fun setupClickListeners() {
@@ -52,8 +63,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnWithFriend.setOnClickListener {
-            // Navigate to Two-Player setup screen
-            showToast("Navigating to Friend Setup")
+            // Navigate to Two-Player game screen
+            startActivity(Intent(this, GameFriendActivity::class.java))
         }
 
         binding.btnSettings.setOnClickListener {
