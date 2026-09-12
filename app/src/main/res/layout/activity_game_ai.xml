@@ -42,8 +42,8 @@
             app:cardCornerRadius="22.5dp"
             app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tvAiName"
-            app:layout_constraintStart_toEndOf="@+id/tvPlayerName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:strokeWidth="0dp">
 
