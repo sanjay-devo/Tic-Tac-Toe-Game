@@ -1,6 +1,7 @@
 package com.tictactoe.icc
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -118,8 +119,12 @@ class GameFriendActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        binding.btnHome.setOnClickListener {
+        binding.btnHeaderHome.setOnClickListener {
             showExitConfirmation()
+        }
+
+        binding.btnHeaderSettings.setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
     }
 

@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, GameFriendActivity::class.java))
         }
 
-        binding.btnSettings.setOnClickListener {
+        binding.btnHeaderSettings.setOnClickListener {
             // Open Settings
             startActivity(Intent(this, SettingsActivity::class.java))
         }
