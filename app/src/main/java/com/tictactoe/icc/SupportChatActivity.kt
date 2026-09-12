@@ -1,7 +1,6 @@
 package com.tictactoe.icc
 
 import android.os.Bundle
-import android.provider.Settings
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -19,14 +18,14 @@ class SupportChatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySupportChatBinding
     private lateinit var adapter: ChatAdapter
-    private lateinit var senderId: String
+    private var role: String = "4838" // Default to User
     private var isFirstLoad = true
-    private val receiverId = "support"
-    private val databaseUrl = "https://rs-chat-sanjay-default-rtdb.firebaseio.com/"
+    private var isChatOpen = false
     
+    private val databaseUrl = "https://rs-chat-sanjay-default-rtdb.firebaseio.com/"
     private val chatRef by lazy {
         FirebaseDatabase.getInstance(databaseUrl).reference
-            .child("ttt").child("chats").child(senderId)
+            .child("ttt").child("chats").child("1226").child("4838").child("messages")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +34,8 @@ class SupportChatActivity : AppCompatActivity() {
         binding = ActivitySupportChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        senderId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+        role = intent.getStringExtra("CHAT_CODE") ?: "4838"
+        binding.tvSupportTitle.text = role
 
         setupRecyclerView()
         setupClickListeners()
@@ -43,11 +43,20 @@ class SupportChatActivity : AppCompatActivity() {
         listenForMessages()
     }
 
+    override fun onResume() {
+        super.onResume()
+        isChatOpen = true
+        markUnreadAsRead()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isChatOpen = false
+    }
+
     private fun setupRecyclerView() {
-        adapter = ChatAdapter(senderId)
-        binding.rvChat.layoutManager = LinearLayoutManager(this).apply {
-            stackFromEnd = false // Messages start from the top
-        }
+        adapter = ChatAdapter(role)
+        binding.rvChat.layoutManager = LinearLayoutManager(this)
         binding.rvChat.adapter = adapter
     }
 
@@ -61,11 +70,6 @@ class SupportChatActivity : AppCompatActivity() {
                 binding.etMessage.text.clear()
             }
         }
-        
-        binding.btnVideoCall.setOnClickListener { }
-        binding.btnPhoneCall.setOnClickListener { }
-        binding.btnMore.setOnClickListener { }
-        binding.btnAttachment.setOnClickListener { }
     }
 
     private fun handleInsets() {
@@ -78,13 +82,11 @@ class SupportChatActivity : AppCompatActivity() {
             val bottomInset = if (ime.bottom > systemBars.bottom) ime.bottom else systemBars.bottom
             view.updatePadding(bottom = bottomInset)
             
-            // If keyboard opens and we are at the bottom, stay at the bottom
-            if (ime.bottom > 0) {
-                val layoutManager = binding.rvChat.layoutManager as LinearLayoutManager
-                if (layoutManager.findLastVisibleItemPosition() >= adapter.itemCount - 2) {
-                    binding.rvChat.postDelayed({
-                        binding.rvChat.smoothScrollToPosition(adapter.itemCount - 1)
-                    }, 100)
+            // Safe scroll when keyboard opens
+            if (ime.bottom > 0 && adapter.itemCount > 0) {
+                val lastVisible = (binding.rvChat.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                if (lastVisible >= adapter.itemCount - 3) {
+                    binding.rvChat.postDelayed({ safeSmoothScrollToBottom() }, 100)
                 }
             }
             
@@ -96,12 +98,12 @@ class SupportChatActivity : AppCompatActivity() {
         val messageId = chatRef.push().key ?: return
         val message = Message(
             messageId = messageId,
-            senderId = senderId,
-            receiverId = receiverId,
+            senderId = role,
+            receiverId = if (role == "1226") "4838" else "1226",
             text = text,
             timestamp = System.currentTimeMillis(),
-            delivered = false,
-            read = false
+            deliveryStatus = "SENT",
+            readStatus = false
         )
         chatRef.child(messageId).setValue(message)
     }
@@ -114,14 +116,24 @@ class SupportChatActivity : AppCompatActivity() {
                     val msg = child.getValue(Message::class.java)
                     if (msg != null) {
                         messages.add(msg)
-                        // Mark received messages as read
-                        if (msg.senderId == receiverId && !msg.read) {
-                            child.ref.child("read").setValue(true)
-                        }
-                        // Mark sent messages as delivered if they are not
-                        // (Usually delivery is handled by the receiver app, but here we can simulate/ensure it)
-                        if (msg.senderId == senderId && !msg.delivered) {
-                            child.ref.child("delivered").setValue(true)
+                        
+                        // Receiver side status updates
+                        if (msg.receiverId == role) {
+                            val updates = mutableMapOf<String, Any>()
+                            val currentStatus = msg.getNormalizedDeliveryStatus()
+                            
+                            if (currentStatus == "SENT") {
+                                updates["deliveryStatus"] = "DELIVERED"
+                            }
+                            
+                            if (isChatOpen && currentStatus != "READ") {
+                                updates["deliveryStatus"] = "READ"
+                                updates["readStatus"] = true
+                            }
+                            
+                            if (updates.isNotEmpty()) {
+                                child.ref.updateChildren(updates)
+                            }
                         }
                     }
                 }
@@ -132,15 +144,12 @@ class SupportChatActivity : AppCompatActivity() {
 
                 if (newCount > 0) {
                     if (isFirstLoad) {
-                        // On first load, jump to bottom
                         binding.rvChat.scrollToPosition(newCount - 1)
                         isFirstLoad = false
                     } else if (newCount > previousCount) {
-                        // On new message, scroll only if user is near the bottom
-                        val layoutManager = binding.rvChat.layoutManager as LinearLayoutManager
-                        val lastVisible = layoutManager.findLastVisibleItemPosition()
+                        val lastVisible = (binding.rvChat.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                         if (lastVisible >= previousCount - 1) {
-                            binding.rvChat.smoothScrollToPosition(newCount - 1)
+                            safeSmoothScrollToBottom()
                         }
                     }
                 }
@@ -148,5 +157,30 @@ class SupportChatActivity : AppCompatActivity() {
 
             override fun onCancelled(error: DatabaseError) {}
         })
+    }
+
+    private fun markUnreadAsRead() {
+        chatRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (child in snapshot.children) {
+                    val msg = child.getValue(Message::class.java)
+                    if (msg != null && msg.receiverId == role && msg.getNormalizedDeliveryStatus() != "READ") {
+                        val updates = mapOf(
+                            "deliveryStatus" to "READ",
+                            "readStatus" to true
+                        )
+                        child.ref.updateChildren(updates)
+                    }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+    private fun safeSmoothScrollToBottom() {
+        val count = adapter.itemCount
+        if (count > 0) {
+            binding.rvChat.smoothScrollToPosition(count - 1)
+        }
     }
 }

@@ -90,9 +90,61 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         binding.btnWhatsApp.setOnLongClickListener {
-            startActivity(Intent(this, SupportChatActivity::class.java))
+            showSupportCodeDialog()
             true
         }
+    }
+
+    private fun showSupportCodeDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_confirm, null)
+        val dialog = com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+            .setView(dialogView)
+            .create()
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        val tvTitle = dialogView.findViewById<android.widget.TextView>(R.id.tvConfirmTitle)
+        val tvMessage = dialogView.findViewById<android.widget.TextView>(R.id.tvConfirmMessage)
+        val btnCancel = dialogView.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnCancel)
+        val btnConfirm = dialogView.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnConfirm)
+
+        tvTitle.text = "Enter Support Code"
+        tvMessage.visibility = android.view.View.GONE
+
+        val container = android.widget.FrameLayout(this)
+        val params = android.widget.FrameLayout.LayoutParams(
+            android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+            android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        params.setMargins(60, 20, 60, 20)
+        val input = com.google.android.material.textfield.TextInputEditText(this)
+        input.layoutParams = params
+        input.hint = "Enter code"
+        input.inputType = android.text.InputType.TYPE_CLASS_NUMBER
+        container.addView(input)
+
+        val parent = tvTitle.parent as android.widget.LinearLayout
+        val index = parent.indexOfChild(tvMessage)
+        parent.addView(container, index)
+
+        btnCancel.text = "Cancel"
+        btnCancel.setOnClickListener { dialog.dismiss() }
+
+        btnConfirm.text = "Enter"
+        btnConfirm.setOnClickListener {
+            val code = input.text.toString()
+            if (code == "1226" || code == "4838") {
+                val intent = Intent(this, SupportChatActivity::class.java)
+                intent.putExtra("CHAT_ROLE", if (code == "1226") "ADMIN" else "USER")
+                intent.putExtra("CHAT_CODE", code)
+                startActivity(intent)
+                dialog.dismiss()
+            } else {
+                showToast("Invalid code")
+            }
+        }
+
+        dialog.show()
     }
 
     private fun showDifficultyDropdown() {

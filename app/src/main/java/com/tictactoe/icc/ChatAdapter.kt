@@ -92,16 +92,16 @@ class ChatAdapter(private val currentUserId: String) : RecyclerView.Adapter<Recy
             binding.tvMessage.text = message.text
             binding.tvTime.text = formatTime(message.timestamp)
 
-            when {
-                message.read -> {
+            when (message.getNormalizedDeliveryStatus()) {
+                "READ" -> {
                     binding.ivStatus.setImageResource(R.drawable.ic_tick_double)
                     binding.ivStatus.setColorFilter(binding.root.context.getColor(R.color.chat_read_tick))
                 }
-                message.delivered -> {
+                "DELIVERED" -> {
                     binding.ivStatus.setImageResource(R.drawable.ic_tick_double)
                     binding.ivStatus.setColorFilter(binding.root.context.getColor(R.color.chat_unread_tick))
                 }
-                else -> {
+                else -> { // "SENT"
                     binding.ivStatus.setImageResource(R.drawable.ic_tick_single)
                     binding.ivStatus.setColorFilter(binding.root.context.getColor(R.color.chat_unread_tick))
                 }
