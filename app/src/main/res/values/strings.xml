@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Tic Tac Toe</string>
+    <string name="choose_play_mode">Choose your play mode</string>
+    <string name="with_ai">WITH AI</string>
+    <string name="with_friend">WITH A FRIEND</string>
+    <string name="content_desc_logo">Tic Tac Toe Logo</string>
+    <string name="content_desc_settings">Settings</string>
 </resources>
