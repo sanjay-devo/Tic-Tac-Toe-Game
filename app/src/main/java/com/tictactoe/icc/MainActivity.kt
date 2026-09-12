@@ -3,10 +3,12 @@ package com.tictactoe.icc
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tictactoe.icc.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -26,12 +28,27 @@ class MainActivity : AppCompatActivity() {
         }
 
         setupClickListeners()
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showExitConfirmation()
+            }
+        })
+    }
+
+    private fun showExitConfirmation() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Exit App?")
+            .setMessage("Are you sure you want to close the app?")
+            .setNegativeButton("NO") { dialog, _ -> dialog.dismiss() }
+            .setPositiveButton("YES") { _, _ -> finish() }
+            .show()
     }
 
     private fun setupClickListeners() {
         binding.btnWithAI.setOnClickListener {
             // Navigate to AI game setup screen
-            showToast("Navigating to AI Setup")
+            startActivity(Intent(this, GameAiActivity::class.java))
         }
 
         binding.btnWithFriend.setOnClickListener {
