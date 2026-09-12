@@ -268,6 +268,46 @@
             android:layout_marginHorizontal="20dp"
             android:background="@color/divider_gray" />
 
+        <!-- Privacy -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rowPrivacy"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingHorizontal="20dp">
+
+            <ImageView
+                android:id="@+id/ivIconPrivacy"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:contentDescription="Privacy"
+                android:src="@drawable/ic_privacy"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/dark_navy" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Privacy"
+                android:textColor="@color/dark_navy"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivIconPrivacy"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@color/divider_gray" />
+
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

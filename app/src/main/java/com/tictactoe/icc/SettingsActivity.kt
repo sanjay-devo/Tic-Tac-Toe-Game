@@ -78,6 +78,11 @@ class SettingsActivity : AppCompatActivity() {
                 showToast("Email app not found")
             }
         }
+
+        // Privacy
+        binding.rowPrivacy.setOnClickListener {
+            startActivity(Intent(this, PrivacyActivity::class.java))
+        }
     }
 
     private fun showDifficultyDropdown() {
