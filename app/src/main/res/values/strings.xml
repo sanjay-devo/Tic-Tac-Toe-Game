@@ -5,4 +5,16 @@
     <string name="with_friend">WITH A FRIEND</string>
     <string name="content_desc_logo">Tic Tac Toe Logo</string>
     <string name="content_desc_settings">Settings</string>
+    <string name="app_title">Tic Tac Toe</string>
+    <string name="app_version">ver.1.0.0</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="vibration">Vibration</string>
+    <string name="no_ads">No Ads</string>
+    <string name="rating_app">Rating app</string>
+    <string name="feedback">Feedback</string>
+    <string name="easy">Easy</string>
+    <string name="random">Random</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
+    <string name="impossible">Impossible</string>
 </resources>

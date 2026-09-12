@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="32dp"
+        android:paddingBottom="32dp">
+
+        <!-- Header -->
+        <ImageView
+            android:id="@+id/ivSettingsLogo"
+            android:layout_width="310dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center_horizontal"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/content_desc_logo"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/app_title"
+            android:textColor="@color/dark_navy"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/app_version"
+            android:textColor="@color/dark_navy"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="48dp" />
+
+        <!-- Settings List -->
+
+        <!-- Difficulty -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rowDifficulty"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingHorizontal="20dp">
+
+            <ImageView
+                android:id="@+id/ivIconDifficulty"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:contentDescription="@string/difficulty"
+                android:src="@drawable/ic_difficulty"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@string/difficulty"
+                android:textColor="@color/dark_navy"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivIconDifficulty"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvDifficultyValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:text="@string/easy"
+                android:textColor="@color/dark_navy"
+                android:textSize="16sp"
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@color/divider_gray" />
+
+        <!-- Vibration -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rowVibration"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="?attr/selectableItemBackground"
+            android:paddingHorizontal="20dp">
+
+            <ImageView
+                android:id="@+id/ivIconVibration"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:contentDescription="@string/vibration"
+                android:src="@drawable/ic_vibration"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@string/vibration"
+                android:textColor="@color/dark_navy"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivIconVibration"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switchVibration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:trackTint="@color/switch_track_selector" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@color/divider_gray" />
+
+        <!-- No Ads -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rowNoAds"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingHorizontal="20dp">
+
+            <ImageView
+                android:id="@+id/ivIconNoAds"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:contentDescription="@string/no_ads"
+                android:src="@drawable/ic_no_ads"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@string/no_ads"
+                android:textColor="@color/dark_navy"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivIconNoAds"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@color/divider_gray" />
+
+        <!-- Rating App -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rowRating"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingHorizontal="20dp">
+
+            <ImageView
+                android:id="@+id/ivIconRating"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:contentDescription="@string/rating_app"
+                android:src="@drawable/ic_star_outline"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@string/rating_app"
+                android:textColor="@color/dark_navy"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivIconRating"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@color/divider_gray" />
+
+        <!-- Feedback -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rowFeedback"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingHorizontal="20dp">
+
+            <ImageView
+                android:id="@+id/ivIconFeedback"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:contentDescription="@string/feedback"
+                android:src="@drawable/ic_feedback"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@string/feedback"
+                android:textColor="@color/dark_navy"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivIconFeedback"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@color/divider_gray" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

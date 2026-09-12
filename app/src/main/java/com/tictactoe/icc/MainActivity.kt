@@ -1,5 +1,6 @@
 package com.tictactoe.icc
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnSettings.setOnClickListener {
             // Open Settings
-            showToast("Opening Settings")
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
     }
 
