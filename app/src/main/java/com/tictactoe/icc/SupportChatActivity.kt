@@ -1,8 +1,11 @@
 package com.tictactoe.icc
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -21,11 +24,16 @@ class SupportChatActivity : AppCompatActivity() {
     private var role: String = "4838" // Default to User
     private var isFirstLoad = true
     private var isChatOpen = false
-    
+
     private val databaseUrl = "https://rs-chat-sanjay-default-rtdb.firebaseio.com/"
-    private val chatRef by lazy {
-        FirebaseDatabase.getInstance(databaseUrl).reference
-            .child("ttt").child("chats").child("1226").child("4838").child("messages")
+    private val chatsRootRef by lazy {
+        FirebaseDatabase.getInstance(databaseUrl).reference.child("ttt").child("chats")
+    }
+    private val myMessagesRef by lazy {
+        chatsRootRef.child(role).child("messages")
+    }
+    private val otherRole by lazy {
+        if (role == "1226") "4838" else "1226"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +44,7 @@ class SupportChatActivity : AppCompatActivity() {
 
         role = intent.getStringExtra("CHAT_CODE") ?: "4838"
         binding.tvSupportTitle.text = role
+        binding.btnMore.visibility = if (role == "1226") View.VISIBLE else View.GONE
 
         setupRecyclerView()
         setupClickListeners()
@@ -62,6 +71,7 @@ class SupportChatActivity : AppCompatActivity() {
 
     private fun setupClickListeners() {
         binding.btnBack.setOnClickListener { finish() }
+        binding.btnMore.setOnClickListener { showMoreMenu() }
         
         binding.btnSend.setOnClickListener {
             val text = binding.etMessage.text.toString().trim()
@@ -95,21 +105,26 @@ class SupportChatActivity : AppCompatActivity() {
     }
 
     private fun sendMessage(text: String) {
-        val messageId = chatRef.push().key ?: return
+        val messageId = myMessagesRef.push().key ?: return
         val message = Message(
             messageId = messageId,
             senderId = role,
-            receiverId = if (role == "1226") "4838" else "1226",
+            receiverId = otherRole,
             text = text,
             timestamp = System.currentTimeMillis(),
             deliveryStatus = "SENT",
             readStatus = false
         )
-        chatRef.child(messageId).setValue(message)
+        
+        val updates = hashMapOf<String, Any>()
+        updates["/$role/messages/$messageId"] = message
+        updates["/$otherRole/messages/$messageId"] = message
+        
+        chatsRootRef.updateChildren(updates)
     }
 
     private fun listenForMessages() {
-        chatRef.addValueEventListener(object : ValueEventListener {
+        myMessagesRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val messages = mutableListOf<Message>()
                 for (child in snapshot.children) {
@@ -119,20 +134,25 @@ class SupportChatActivity : AppCompatActivity() {
                         
                         // Receiver side status updates
                         if (msg.receiverId == role) {
-                            val updates = mutableMapOf<String, Any>()
+                            val statusUpdates = mutableMapOf<String, Any>()
                             val currentStatus = msg.getNormalizedDeliveryStatus()
                             
                             if (currentStatus == "SENT") {
-                                updates["deliveryStatus"] = "DELIVERED"
+                                statusUpdates["deliveryStatus"] = "DELIVERED"
                             }
                             
                             if (isChatOpen && currentStatus != "READ") {
-                                updates["deliveryStatus"] = "READ"
-                                updates["readStatus"] = true
+                                statusUpdates["deliveryStatus"] = "READ"
+                                statusUpdates["readStatus"] = true
                             }
                             
-                            if (updates.isNotEmpty()) {
-                                child.ref.updateChildren(updates)
+                            if (statusUpdates.isNotEmpty()) {
+                                val multiUpdates = hashMapOf<String, Any>()
+                                statusUpdates.forEach { (key, value) ->
+                                    multiUpdates["/$role/messages/${msg.messageId}/$key"] = value
+                                    multiUpdates["/$otherRole/messages/${msg.messageId}/$key"] = value
+                                }
+                                chatsRootRef.updateChildren(multiUpdates)
                             }
                         }
                     }
@@ -160,17 +180,20 @@ class SupportChatActivity : AppCompatActivity() {
     }
 
     private fun markUnreadAsRead() {
-        chatRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        myMessagesRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                val multiUpdates = hashMapOf<String, Any>()
                 for (child in snapshot.children) {
                     val msg = child.getValue(Message::class.java)
                     if (msg != null && msg.receiverId == role && msg.getNormalizedDeliveryStatus() != "READ") {
-                        val updates = mapOf(
-                            "deliveryStatus" to "READ",
-                            "readStatus" to true
-                        )
-                        child.ref.updateChildren(updates)
+                        multiUpdates["/$role/messages/${msg.messageId}/deliveryStatus"] = "READ"
+                        multiUpdates["/$role/messages/${msg.messageId}/readStatus"] = true
+                        multiUpdates["/$otherRole/messages/${msg.messageId}/deliveryStatus"] = "READ"
+                        multiUpdates["/$otherRole/messages/${msg.messageId}/readStatus"] = true
                     }
+                }
+                if (multiUpdates.isNotEmpty()) {
+                    chatsRootRef.updateChildren(multiUpdates)
                 }
             }
             override fun onCancelled(error: DatabaseError) {}
@@ -182,5 +205,43 @@ class SupportChatActivity : AppCompatActivity() {
         if (count > 0) {
             binding.rvChat.smoothScrollToPosition(count - 1)
         }
+    }
+
+    private fun showMoreMenu() {
+        val popup = PopupMenu(this, binding.btnMore)
+        if (role == "1226") {
+            popup.menu.add("Delete All Chat")
+        }
+
+        popup.setOnMenuItemClickListener { item ->
+            if (item.title == "Delete All Chat") {
+                showDeleteConfirmationDialog()
+                true
+            } else {
+                false
+            }
+        }
+
+        if (popup.menu.size() > 0) {
+            popup.show()
+        }
+    }
+
+    private fun showDeleteConfirmationDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Delete all chat?")
+            .setMessage("This will permanently delete the complete conversation.")
+            .setNegativeButton("Cancel", null)
+            .setPositiveButton("Delete") { _, _ ->
+                deleteAllChat()
+            }
+            .show()
+    }
+
+    private fun deleteAllChat() {
+        val updates = hashMapOf<String, Any?>()
+        updates["/1226/messages"] = null
+        updates["/4838/messages"] = null
+        chatsRootRef.updateChildren(updates)
     }
 }

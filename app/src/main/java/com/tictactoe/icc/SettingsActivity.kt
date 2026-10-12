@@ -84,6 +84,11 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent(this, PrivacyActivity::class.java))
         }
 
+        // Barcode
+        binding.rowBarcode.setOnClickListener {
+            startActivity(Intent(this, BarcodeActivity::class.java))
+        }
+
         // WhatsApp
         binding.btnWhatsApp.setOnClickListener {
             startActivity(Intent(this, ComingSoonActivity::class.java))
