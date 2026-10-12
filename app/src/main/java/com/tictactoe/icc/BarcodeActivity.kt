@@ -1,5 +1,6 @@
 package com.tictactoe.icc
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +24,16 @@ class BarcodeActivity : AppCompatActivity() {
             insets
         }
 
-        binding.btnHeaderBack.setOnClickListener { finish() }
-        binding.btnBack.setOnClickListener { finish() }
+        binding.btnHeaderBack.setOnClickListener {
+            finish()
+        }
+
+        binding.btnScanBarcodePage.setOnClickListener {
+            startActivity(Intent(this, ScanBarcodeActivity::class.java))
+        }
+
+        binding.btnAddProductPage.setOnClickListener {
+            startActivity(Intent(this, AddProductActivity::class.java))
+        }
     }
 }

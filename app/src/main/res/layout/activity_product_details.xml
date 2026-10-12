@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/productDetailsRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background">
+
+    <!-- Header -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btnHeaderBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/back"
+                android:src="@drawable/ic_back_arrow"
+                app:tint="@color/dark_navy" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-bold"
+            android:text="Product Details"
+            android:textColor="@color/dark_navy"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="32dp">
+
+            <!-- Product Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- Product Image -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_marginBottom="16dp"
+                        app:cardBackgroundColor="#F1F5F9"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="#E2E8F0">
+
+                        <ImageView
+                            android:id="@+id/ivProductImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="Product Image"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/ic_launcher" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Product Name -->
+                    <TextView
+                        android:id="@+id/tvProductName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-black"
+                        android:gravity="center"
+                        android:text="Product Name"
+                        android:textColor="@color/dark_navy"
+                        android:textSize="22sp" />
+
+                    <!-- MRP Tag -->
+                    <TextView
+                        android:id="@+id/tvProductMrp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_chat_input"
+                        android:fontFamily="sans-serif-bold"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="6dp"
+                        android:text="MRP: ₹199.00"
+                        android:textColor="@color/primary_blue"
+                        android:textSize="18sp" />
+
+                    <!-- Short Description -->
+                    <TextView
+                        android:id="@+id/tvProductDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center"
+                        android:text="Short Description goes here"
+                        android:textColor="#64748B"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="18dp"
+                        android:background="#E2E8F0" />
+
+                    <!-- Technical Details Grid -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!-- Product ID -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-medium"
+                                android:text="Product ID:"
+                                android:textColor="#64748B"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tvProductId"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="monospace"
+                                android:text="PRD-12345"
+                                android:textColor="@color/dark_navy"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
+                        <!-- SKU -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-medium"
+                                android:text="SKU:"
+                                android:textColor="#64748B"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tvProductSku"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="monospace"
+                                android:text="SKU-892123"
+                                android:textColor="@color/dark_navy"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
+                        <!-- Barcode Number -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-medium"
+                                android:text="Barcode Number:"
+                                android:textColor="#64748B"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tvProductBarcodeNumber"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="monospace"
+                                android:text="890123456789"
+                                android:textColor="@color/dark_navy"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="18dp"
+                        android:background="#E2E8F0" />
+
+                    <!-- Code 128 Barcode Image -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="Code 128 Barcode"
+                        android:textColor="@color/dark_navy"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/ivBarcodeDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="8dp"
+                        android:contentDescription="Barcode Image"
+                        android:scaleType="fitCenter" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Buttons -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDownloadBarcodeDetails"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginBottom="12dp"
+                android:text="Download Barcode PNG"
+                android:textColor="@color/primary_blue"
+                app:cornerRadius="14dp"
+                app:icon="@drawable/ic_download"
+                app:iconTint="@color/primary_blue"
+                app:strokeColor="@color/primary_blue" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnScanAnother"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:text="Scan Another Barcode"
+                android:textSize="16sp"
+                app:backgroundTint="@color/primary_blue"
+                app:cornerRadius="14dp" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
